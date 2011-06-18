@@ -1,8 +1,11 @@
 from django.db import models
-from HTMLParser import HTMLParser
+from django.contrib.auth.models import User
+from urllib import urlencode
+import urllib2, re
 
 class Viewer(models.Model):
-    jtv_handle = models.CharField(max_length=64)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    jtv_handle = models.CharField(max_length=64, primary_key=True)
     sc2_name = models.CharField(max_length=32)
     sc2_charcode = models.IntegerField()
     is_verified = models.BooleanField(default=False)
@@ -12,10 +15,10 @@ class Viewer(models.Model):
     JTV_LOGIN_PAGE = 'http://www.justin.tv/login'
     JTV_SUBS_PAGE = 'http://www.justin.tv/settings?section=purchases&subsection=subscriptions'
     
+    class Meta:
+        app_label = 'viewers'
+    
     def verify(self, password):
-        import urllib2, re
-        from urllib import urlencode
-        
         # get the authenticity token and session id from JTV
         url = Viewer.get_jtv_url(self.JTV_INITIAL_PAGE)
         if url is None:
@@ -69,7 +72,6 @@ class Viewer(models.Model):
         return self.parse_subs(match.group(1))
         
     def parse_subs(self, content):
-        import re
         pattern = re.compile('<tr>(.*?)</tr>', re.DOTALL)
         subs = re.split(pattern, content.strip())
         
@@ -77,7 +79,8 @@ class Viewer(models.Model):
             return False
 
         for i in range(len(subs)):
-            print subs[i]
+            if 'Day9tv' in subs[i] and "<p class='green'>Active</p>" in subs[i]:
+                return True
             
         return False
         
@@ -96,9 +99,6 @@ class Viewer(models.Model):
         
     @staticmethod
     def get_jtv_url(req, data=None):
-        import urllib2
-        from urllib import urlencode
-        
         try:
             if data is not None:
                 data = urlencode(data)
@@ -106,26 +106,3 @@ class Viewer(models.Model):
             return urllib2.urlopen(req, data)
         except:
             return None
-
-class SubsParser(HTMLParser):
-    def __init__(self):
-        self.verified = False
-        HTMLParser.__init__(self)
-        
-    def feed(self, data):
-        HTMLParser.feed(self, data)
-        print data
-        
-    def handle_starttag(self, tag, attrs):
-        if tag == "tr":
-            pass
-    
-class ViewerSubmission(models.Model):
-    viewer = models.ForeignKey(Viewer)
-    submit_time = models.DecimalField(max_digits=15, decimal_places=3)
-    
-    def __unicode__(self):
-        from time import time
-        from decimal import Decimal
-        time_ago = Decimal(str(time())) - self.submit_time
-        return ''.join([str(time_ago), ' seconds ago'])

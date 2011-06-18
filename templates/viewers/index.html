@@ -1,0 +1,9 @@
+{% extends 'page.html' %}
+
+{% block content %}
+{% if me %}
+    Hi, <strong>{{me.jtv_handle}}</strong>
+{% else %}
+    WHO ARE YOU
+{% endif %}
+{% endblock %}
