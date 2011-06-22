@@ -17,6 +17,9 @@ class Viewer(models.Model):
     
     class Meta:
         app_label = 'viewers'
+        permissions = (
+            ('enable monobattles', 'Start/Stop monobattle queueing'),
+        )
     
     def verify(self, password):
         # get the authenticity token and session id from JTV

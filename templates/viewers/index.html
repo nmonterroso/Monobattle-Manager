@@ -1,5 +1,9 @@
 {% extends 'page.html' %}
 
+{% block js %}
+<script type='text/javascript' src='{{ STATIC_URL }}js/viewers.js'></script>
+{% endblock %}
+
 {% block content %}
 {% if me %}
     Hi, <strong>{{me.jtv_handle}}</strong>
