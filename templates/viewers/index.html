@@ -5,9 +5,20 @@
 {% endblock %}
 
 {% block content %}
-{% if me %}
-    Hi, <strong>{{me.jtv_handle}}</strong>
+{% if jtv_verified %}
+    You have been verified using JTV!
 {% else %}
-    WHO ARE YOU
+  <h2>Justin.tv login</h2>
+  <div class='description'>
+    We need your justin.tv login info to make sure you are indeed a subscriber to Day9. Don't worry, we don't keep this password.
+  </div>
+  <form action='/verify' id='verify_form'>
+    {% csrf_token %}
+    <label for='id_username'>username:</label>
+    {{verify_form.username}}
+    <label for='id_password'}>password:</label>
+    {{verify_form.password}}
+    <input type='submit' value='verify' />
+  </form>
 {% endif %}
 {% endblock %}
