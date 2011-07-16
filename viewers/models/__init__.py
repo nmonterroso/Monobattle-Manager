@@ -1,2 +1,1 @@
-from Viewer import Viewer
 from ViewerSubmission import ViewerSubmission

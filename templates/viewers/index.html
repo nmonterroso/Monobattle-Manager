@@ -1,14 +1,24 @@
 {% extends 'page.html' %}
 
 {% block js %}
+<script type='text/javascript'>
+  {% if jtv_verified %}
+    var is_jtv_verified = true;
+  {% else %}
+    var is_jtv_verified = false;
+  {% endif %}
+</script>
 <script type='text/javascript' src='{{ STATIC_URL }}js/viewers.js'></script>
 {% endblock %}
 
 {% block content %}
-{% if jtv_verified %}
-    You have been verified using JTV!
-{% else %}
+<div id='verify_message'>
+  You have been verified using JTV!
+</div>
+
+<div id='verify_form_container'>
   <h2>Justin.tv login</h2>
+  <div id='verify_error' class='error_message'></div>
   <div class='description'>
     We need your justin.tv login info to make sure you are indeed a subscriber to Day9. Don't worry, we don't keep this password.
   </div>
@@ -19,6 +29,21 @@
     <label for='id_password'}>password:</label>
     {{verify_form.password}}
     <input type='submit' value='verify' />
+    <img class='loading_indicator' src='{{ STATIC_URL}}img/ajax-loader.gif' />
   </form>
-{% endif %}
+</div>
+
+<div id='submit_form_container'>
+  <h2>Sign up for monobattles!</h2>
+  <div id='submit_message'></div>
+  <form action='/submit' id='submit_form'>
+    {% csrf_token %}
+    <label for='id_sc2name'>sc2 name:</label>
+    {{submit_form.sc2name}}
+    <label for='id_sc2code'>character code:</label>
+    {{submit_form.sc2code}}
+    <input type='submit' value='sign up!' />
+    <img class='loading_indicator' src='{{ STATIC_URL}}img/ajax-loader.gif' />
+  </form>
+</div>
 {% endblock %}

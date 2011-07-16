@@ -1,25 +1,14 @@
-from django.db import models
-from django.contrib.auth.models import User
 from urllib import urlencode
 import urllib2, re
 
-class Viewer(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
-    jtv_handle = models.CharField(max_length=64, primary_key=True)
-    sc2_name = models.CharField(max_length=32)
-    sc2_charcode = models.IntegerField()
-    is_verified = models.BooleanField(default=False)
-    
+class Viewer():
     JTV_COOKIE_NAME = '_jtv3_session_id'
     JTV_INITIAL_PAGE = 'http://www.justin.tv/user/login'
     JTV_LOGIN_PAGE = 'http://www.justin.tv/login'
     JTV_SUBS_PAGE = 'http://www.justin.tv/settings?section=purchases&subsection=subscriptions'
     
-    class Meta:
-        app_label = 'viewers'
-        permissions = (
-            ('enable monobattles', 'Start/Stop monobattle queueing'),
-        )
+    def __init__(self, jtv_handle):
+        self.jtv_handle = jtv_handle
     
     def verify(self, password):
         # get the authenticity token and session id from JTV
@@ -56,6 +45,8 @@ class Viewer(models.Model):
         }
         
         url = Viewer.get_jtv_url(req, data)
+        if (url is None):
+            return False
         cookie = url.info().getheader('set-cookie')
         url.close()
         
@@ -88,7 +79,7 @@ class Viewer(models.Model):
         return False
         
     def __unicode__(self):
-        return ''.join([self.jtv_handle, ' - ', self.sc2_name, '.', str(self.sc2_charcode)])
+        return self.jtv_handle
         
     @staticmethod
     def get_value_from_header(header_str, key):

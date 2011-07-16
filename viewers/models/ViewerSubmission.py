@@ -1,8 +1,9 @@
 from django.db import models
 
 class ViewerSubmission(models.Model):
-    viewer = models.ForeignKey('Viewer')
-    submit_time = models.DecimalField(max_digits=15, decimal_places=3)
+    sc2_name = models.CharField(max_length=64)
+    sc2_charcode = models.CharField(max_length=8)
+    submit_time = models.DecimalField(max_digits=17, decimal_places=5)
     
     class Meta:
         app_label = 'viewers'

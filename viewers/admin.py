@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-from viewers.models import Viewer, ViewerSubmission
+from viewers.models import ViewerSubmission
 from django.contrib import admin
 
-admin.site.register(Viewer)
 admin.site.register(ViewerSubmission)
