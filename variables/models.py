@@ -24,6 +24,10 @@ class Variable(models.Model):
         return Variable.get(name, default_value, "bool")
         
     @staticmethod
+    def get_decimal(name, default_value=0):
+        return Variable.get(name, default_value, 'decimal')
+        
+    @staticmethod
     def set(name, value):
         var = Variable(name=name, value=value)
         var.save()
@@ -38,6 +42,8 @@ class Variable(models.Model):
                     return False
             elif type == "int":
                 return int(value)
+            elif type == 'decimal':
+                return Decimal(value)
             else:
                 return str(value)
         except:

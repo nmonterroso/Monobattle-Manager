@@ -1,3 +1,6 @@
+from time import time
+from decimal import Decimal
+
 from django.db import models
 
 class ViewerSubmission(models.Model):
@@ -7,9 +10,9 @@ class ViewerSubmission(models.Model):
     
     class Meta:
         app_label = 'viewers'
-        
+    
+    def get_time_diff(self):
+        return Decimal(str(time())) - self.submit_time
+    
     def __unicode__(self):
-        from time import time
-        from decimal import Decimal
-        time_ago = Decimal(str(time())) - self.submit_time
-        return ''.join([str(time_ago), ' seconds ago'])
+        return ''.join([str(self.get_time_diff()), ' seconds ago'])
