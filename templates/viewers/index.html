@@ -7,11 +7,55 @@
   {% else %}
     var is_jtv_verified = false;
   {% endif %}
+  
+  {% if monobattles_enabled %}
+    var monobattles_enabled = true;
+  {% else %}
+    var monobattles_enabled = false;
+  {% endif %}
+  
+  var WEB_SOCKET_DEBUG = true;
+  var WEB_SOCKET_SWF_LOCATION = '{{ STATIC_URL }}websocket/WebSocketMain.swf';
 </script>
+<script type='text/javascript' src='{{ STATIC_URL }}websocket/swfobject.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}websocket/web_socket.js'></script>
 <script type='text/javascript' src='{{ STATIC_URL }}js/viewers.js'></script>
 {% endblock %}
 
+{% block css %}
+<style>
+  #monobattle_status {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 1px solid black;
+    width: 500px;
+    padding: 10px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  #monobattle_status.enabled, #monobattle_status.disabled {
+    display: block;
+  }
+  
+  #monobattle_status.enabled {
+    background: green;
+  }
+  
+  #monobattle_status.disabled {
+    background: red;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
+<div id="monobattle_status">
+  Monobattles are ON
+</div>
 <div id='verify_message'>
   You have been verified using JTV!
 </div>

@@ -1,7 +1,11 @@
 $(document).ready(function() {
+  var WEBSOCKET_URL = "ws://"+window.location.hostname+":10081/monobattles";
+  
   var form_container = $('#verify_form_container');
   var verify_success = $('#verify_message');
   var signup = $('#submit_form_container');
+  var monobattle_status = $('#monobattle_status');
+  var websocket = null;
   
   $('#verify_form_container, #verify_message, #submit_form_container').hide();
   $('.loading_indicator').hide();
@@ -98,4 +102,49 @@ $(document).ready(function() {
     
     return false;
   });
+  
+  var set_status = function(is_enabled) {
+    if (is_enabled) {
+        monobattle_status
+          .addClass('enabled')
+          .removeClass('disabled')
+          .html('Monobattles are ON');
+      }
+      else {
+        monobattle_status
+          .addClass('disabled')
+          .removeClass('enabled')
+          .html('Monobattles are OFF');
+      }
+  }
+  
+  var connect = function() {
+    try {
+      websocket = new WebSocket(WEBSOCKET_URL);
+    }
+    catch (exception) {
+      return;
+    }
+    
+    websocket.onopen = function() {
+      console.log("connection established!");
+      websocket.send(JSON.stringify({
+        'connect': true
+      }));
+    }
+    websocket.onmessage = function(event) {
+      var json = $.parseJSON(event.data);
+      set_status(json.is_enabled);
+      
+    }
+    websocket.onerror = function() {
+      alert('ERROR!');
+    }
+    websocket.onclose = function(event) {
+      
+    }
+  }
+  
+  connect();
+  set_status(monobattles_enabled);
 });

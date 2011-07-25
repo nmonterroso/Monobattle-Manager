@@ -1,4 +1,7 @@
 $(document).ready(function() {
+  var WEBSOCKET_URL = "ws://"+window.location.hostname+":10081/monobattles";
+  var websocket = null;
+  
   var action = 'enable';
   var action_button = $('#action');
   var next_action = $('#next_action');
@@ -17,6 +20,13 @@ $(document).ready(function() {
         signups_enabled = !signups_enabled;
         set_status();
         show_message(data.message);
+        
+        if (websocket != null) {
+          websocket.send(JSON.stringify({
+            is_enabled: signups_enabled,
+            is_admin: true
+          }));  
+        }
         
         if (!signups_enabled) {
           show_submissions(data.submissions)
@@ -58,6 +68,29 @@ $(document).ready(function() {
     $('#message').html(message);
   }
   
+  var connect = function() {
+    try {
+      websocket = new WebSocket(WEBSOCKET_URL);
+    }
+    catch (exception) {
+      return;
+    }
+    
+    websocket.onopen = function() {
+      console.log("connection opened");
+    }
+    websocket.onmessage = function(event) {
+      console.log(event.data);
+    }
+    websocket.onerror = function() {
+      alert('ERROR!');
+    }
+    websocket.onclose = function(event) {
+      websocket = null;
+    }
+  }
+  
   loading.hide();
   set_status();
+  connect();
 })
