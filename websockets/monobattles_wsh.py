@@ -22,6 +22,7 @@ def web_socket_transfer_data(request):
                                 'is_enabled': incoming['is_enabled']
                             }))
                         except:
+                            sockets[i] = None
                             pass
                         
                 while sockets.count(None) > 0:
