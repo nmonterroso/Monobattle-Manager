@@ -16,15 +16,18 @@ def web_socket_transfer_data(request):
                 request.ws_stream.send_message("sending message to "+str(len(sockets))+" sockets!")
                 delete_queue = []
                 for i in range(len(sockets)):
-                    if sockets[i]._request.client_terminated:
+                    if sockets[i]._request.client_terminated or sockets[i]._request.server_terminated:
                         delete_queue.append(i)
                 for i in range(len(delete_queue)):
                     del sockets[delete_queue[i]]
                 request.ws_stream.send_message("there are now "+str(len(sockets))+" sockets!")
                 for i in range(len(sockets)):
-                    sockets[i].send_message(json.dumps({
-                        'is_enabled': incoming['is_enabled']
-                    }))
+                    try:
+                        sockets[i].send_message(json.dumps({
+                            'is_enabled': incoming['is_enabled']
+                        }))
+                    except:
+                        pass
             else:
                 sockets += [request.ws_stream]
         except Exception as inst:
