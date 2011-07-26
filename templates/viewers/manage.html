@@ -7,7 +7,12 @@
   {% else %}
     var signups_enabled = false;
   {% endif %}
+  
+  var WEB_SOCKET_DEBUG = false;
+  var WEB_SOCKET_SWF_LOCATION = '{{ STATIC_URL }}websocket/WebSocketMain.swf';
 </script>
+<script type='text/javascript' src='{{ STATIC_URL }}websocket/swfobject.js'></script>
+<script type='text/javascript' src='{{ STATIC_URL }}websocket/web_socket.js'></script>
 <script type='text/javascript' src='{{ STATIC_URL }}js/manage.js'></script>
 {% endblock %}
 
