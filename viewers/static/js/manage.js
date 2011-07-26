@@ -76,9 +76,7 @@ $(document).ready(function() {
       return;
     }
     
-    websocket.onopen = function() {
-      console.log("connection opened");
-    }
+    websocket.onopen = function() {}
     websocket.onmessage = function(event) {
       console.log(event.data);
     }

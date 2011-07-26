@@ -127,7 +127,6 @@ $(document).ready(function() {
     }
     
     websocket.onopen = function() {
-      console.log("connection established!");
       websocket.send(JSON.stringify({
         'connect': true
       }));
