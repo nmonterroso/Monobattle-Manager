@@ -17,9 +17,12 @@ def web_socket_transfer_data(request):
                     if sockets[i] is None or sockets[i]._request.client_terminated or sockets[i]._request.server_terminated:
                         sockets[i] = None
                     else:
-                        sockets[i].send_message(json.dumps({
-                            'is_enabled': incoming['is_enabled']
-                        }))
+                        try:
+                            sockets[i].send_message(json.dumps({
+                                'is_enabled': incoming['is_enabled']
+                            }))
+                        except:
+                            pass
                         
                 while sockets.count(None) > 0:
                     sockets.remove(None)
