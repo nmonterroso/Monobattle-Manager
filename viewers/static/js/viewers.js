@@ -134,7 +134,7 @@ $(document).ready(function() {
     }
     websocket.onmessage = function(event) {
       var json = $.parseJSON(event.data);
-      if (json.is_enabled != undefined) {
+      if ('is_enabled' in json) {
         set_status(json.is_enabled);
       }
     }
