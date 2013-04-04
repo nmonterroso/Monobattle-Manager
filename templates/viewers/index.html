@@ -1,93 +1,96 @@
 {% extends 'page.html' %}
 
 {% block js %}
-<script type='text/javascript'>
-  {% if jtv_verified %}
-    var is_jtv_verified = true;
-  {% else %}
-    var is_jtv_verified = false;
-  {% endif %}
-  
-  {% if monobattles_enabled %}
-    var monobattles_enabled = true;
-  {% else %}
-    var monobattles_enabled = false;
-  {% endif %}
-  
-  var WEB_SOCKET_DEBUG = false;
-  var WEB_SOCKET_SWF_LOCATION = '{{ STATIC_URL }}websocket/WebSocketMain.swf';
-</script>
-<script type='text/javascript' src='{{ STATIC_URL }}websocket/swfobject.js'></script>
-<script type='text/javascript' src='{{ STATIC_URL }}websocket/web_socket.js'></script>
-<script type='text/javascript' src='{{ STATIC_URL }}js/viewers.js'></script>
+    <script type='text/javascript'>
+        {% if jtv_verified %}
+            var is_jtv_verified = true;
+        {% else %}
+            var is_jtv_verified = false;
+        {% endif %}
+
+        {% if monobattles_enabled %}
+            var monobattles_enabled = true;
+        {% else %}
+            var monobattles_enabled = false;
+        {% endif %}
+
+        var WEB_SOCKET_DEBUG = false;
+        var WEB_SOCKET_SWF_LOCATION = '{{ STATIC_URL }}websocket/WebSocketMain.swf';
+    </script>
+    <script type='text/javascript' src='{{ STATIC_URL }}websocket/swfobject.js'></script>
+    <script type='text/javascript' src='{{ STATIC_URL }}websocket/web_socket.js'></script>
+    <script type='text/javascript' src='{{ STATIC_URL }}js/viewers.js'></script>
 {% endblock %}
 
 {% block css %}
-<style>
-  #monobattle_status {
-    display: none;
-    position: fixed;
-    top: 0;
-    right: 0;
-    border: 1px solid black;
-    width: 500px;
-    padding: 10px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-  }
-  
-  #monobattle_status.enabled, #monobattle_status.disabled {
-    display: block;
-  }
-  
-  #monobattle_status.enabled {
-    background: green;
-  }
-  
-  #monobattle_status.disabled {
-    background: red;
-  }
-</style>
+    <style>
+        #monobattle_status {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            border: 1px solid black;
+            width: 500px;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        #monobattle_status.enabled, #monobattle_status.disabled {
+            display: block;
+        }
+
+        #monobattle_status.enabled {
+            background: green;
+        }
+
+        #monobattle_status.disabled {
+            background: red;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<div id="monobattle_status">
-  Monobattles are ON
-</div>
-<div id='verify_message'>
-  You have been verified using JTV!
-</div>
+    <div id="monobattle_status">
+        Monobattles are ON
+    </div>
+    <div id='verify_message'>
+        You have been verified using JTV!
+    </div>
 
-<div id='verify_form_container'>
-  <h2>Justin.tv login</h2>
-  <div id='verify_error' class='error_message'></div>
-  <div class='description'>
-    We need your justin.tv login info to make sure you are indeed a subscriber to Day9. Don't worry, we don't keep this password.
-  </div>
-  <form action='/verify' id='verify_form'>
-    {% csrf_token %}
-    <label for='id_username'>username:</label>
-    {{verify_form.username}}
-    <label for='id_password'}>password:</label>
-    {{verify_form.password}}
-    <input type='submit' value='verify' />
-    <img class='loading_indicator' src='{{ STATIC_URL}}img/ajax-loader.gif' />
-  </form>
-</div>
+    <div id='verify_form_container'>
+        <h2>Justin.tv login</h2>
 
-<div id='submit_form_container'>
-  <h2>Sign up for monobattles!</h2>
-  <div id='submit_message'></div>
-  <form action='/submit' id='submit_form'>
-    {% csrf_token %}
-    <label for='id_sc2name'>sc2 name:</label>
-    {{submit_form.sc2name}}
-    <label for='id_sc2code'>character code:</label>
-    {{submit_form.sc2code}}
-    <input type='submit' value='sign up!' />
-    <img class='loading_indicator' src='{{ STATIC_URL}}img/ajax-loader.gif' />
-  </form>
-</div>
+        <div id='verify_error' class='error_message'></div>
+        <div class='description'>
+            We need your justin.tv login info to make sure you are indeed a subscriber to Day9. Don't worry, we don't
+            keep this password.
+        </div>
+        <form action='/verify' id='verify_form'>
+            {% csrf_token %}
+            <label for='id_username'>username:</label>
+            {{ verify_form.username }}
+            <label for='id_password'}>password:</label>
+            {{ verify_form.password }}
+            <input type='submit' value='verify'/>
+            <img class='loading_indicator' src='{{ STATIC_URL }}img/ajax-loader.gif'/>
+        </form>
+    </div>
+
+    <div id='submit_form_container'>
+        <h2>Sign up for monobattles!</h2>
+
+        <div id='submit_message'></div>
+        <form action='/submit' id='submit_form'>
+            {% csrf_token %}
+            <label for='id_sc2name'>sc2 name:</label>
+            {{ submit_form.sc2name }}
+            <label for='id_sc2code'>character code:</label>
+            {{ submit_form.sc2code }}
+            <input type='submit' value='sign up!'/>
+            <img class='loading_indicator' src='{{ STATIC_URL }}img/ajax-loader.gif'/>
+        </form>
+    </div>
 {% endblock %}

@@ -4,26 +4,29 @@ from django import forms
 
 from variables.models import Variable
 
+
 def index(request):
-    params = {}
-    if 'jtv_verified' in request.session and request.session['jtv_verified'] == True:
-        params['jtv_verified'] = True
-    else:
-        params['jtv_verified'] = False
-    
-    params['verify_form'] = VerifyForm()
-    params['submit_form'] = SubmitForm()
-    params['monobattles_enabled'] = Variable.get_bool('monobattles_enabled');
-        
-    return render_to_response('viewers/index.html',
-        params,
-        context_instance=RequestContext(request)
-    )
-    
+	params = {}
+	if 'jtv_verified' in request.session and request.session['jtv_verified'] == True:
+		params['jtv_verified'] = True
+	else:
+		params['jtv_verified'] = False
+
+	params['verify_form'] = VerifyForm()
+	params['submit_form'] = SubmitForm()
+	params['monobattles_enabled'] = Variable.get_bool('monobattles_enabled');
+
+	return render_to_response('viewers/index.html',
+														params,
+														context_instance=RequestContext(request)
+	)
+
+
 class VerifyForm(forms.Form):
-    username = forms.CharField(label='justin.tv username', required=True)
-    password = forms.CharField(label='justin.tv password', required=True, widget=forms.widgets.PasswordInput)
-    
+	username = forms.CharField(label='justin.tv username', required=True)
+	password = forms.CharField(label='justin.tv password', required=True, widget=forms.widgets.PasswordInput)
+
+
 class SubmitForm(forms.Form):
-    sc2name = forms.CharField()
-    sc2code = forms.CharField()
+	sc2name = forms.CharField()
+	sc2code = forms.CharField()

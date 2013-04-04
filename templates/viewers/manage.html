@@ -1,25 +1,25 @@
 {% extends 'page.html' %}
 
 {% block js %}
-<script type='text/javascript'>
-  {% if is_enabled %}
-    var signups_enabled = true;
-  {% else %}
-    var signups_enabled = false;
-  {% endif %}
-  
-  var WEB_SOCKET_DEBUG = false;
-  var WEB_SOCKET_SWF_LOCATION = '{{ STATIC_URL }}websocket/WebSocketMain.swf';
-</script>
-<script type='text/javascript' src='{{ STATIC_URL }}websocket/swfobject.js'></script>
-<script type='text/javascript' src='{{ STATIC_URL }}websocket/web_socket.js'></script>
-<script type='text/javascript' src='{{ STATIC_URL }}js/manage.js'></script>
+    <script type='text/javascript'>
+        {% if is_enabled %}
+            var signups_enabled = true;
+        {% else %}
+            var signups_enabled = false;
+        {% endif %}
+
+        var WEB_SOCKET_DEBUG = false;
+        var WEB_SOCKET_SWF_LOCATION = '{{ STATIC_URL }}websocket/WebSocketMain.swf';
+    </script>
+    <script type='text/javascript' src='{{ STATIC_URL }}websocket/swfobject.js'></script>
+    <script type='text/javascript' src='{{ STATIC_URL }}websocket/web_socket.js'></script>
+    <script type='text/javascript' src='{{ STATIC_URL }}js/manage.js'></script>
 {% endblock %}
 
 {% block content %}
-Click the button to <span id='next_action'></span> monobattle sign ups
-<button id='action'></button>
-<img id='loading_indicator' src='{{ STATIC_URL}}img/ajax-loader.gif' />
-<div id='message'></div>
-<div id='monobattle_signups'></div>
+    Click the button to <span id='next_action'></span> monobattle sign ups
+    <button id='action'></button>
+    <img id='loading_indicator' src='{{ STATIC_URL }}img/ajax-loader.gif'/>
+    <div id='message'></div>
+    <div id='monobattle_signups'></div>
 {% endblock %}
