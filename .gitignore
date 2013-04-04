@@ -2,3 +2,7 @@ local/
 *.kpf
 *.pyc
 settings.py
+*.ids
+*.ipr
+*.iws
+*.iml
